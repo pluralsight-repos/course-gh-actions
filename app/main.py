@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from .routers import items
 from .core.config import get_settings
 
-settings = get_settings
+settings = get_settings()
 
 app = FastAPI(
     title=settings.app_name,
