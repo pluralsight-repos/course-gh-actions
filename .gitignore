@@ -41,3 +41,7 @@ htmlcov/
 
 # Logs
 *.log
+
+# Old files (keeping for reference)
+main.py.old
+test_main.py.old

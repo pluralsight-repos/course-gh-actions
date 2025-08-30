@@ -1,27 +1,12 @@
 import pytest
 from fastapi.testclient import TestClient
-from main import app
+from app.main import app
 
 client = TestClient(app)
 
-def test_root():
-    """Test the root endpoint"""
-    response = client.get("/")
-    assert response.status_code == 200
-    data = response.json()
-    assert data["message"] == "Welcome to the Simple API!"
-    assert data["version"] == "1.0.0"
-
-def test_health_check():
-    """Test the health check endpoint"""
-    response = client.get("/health")
-    assert response.status_code == 200
-    data = response.json()
-    assert data["status"] == "healthy"
-
 def test_get_items_empty():
     """Test getting items when database is empty"""
-    response = client.get("/items")
+    response = client.get("/api/v1/items")
     assert response.status_code == 200
     assert response.json() == []
 
@@ -33,7 +18,7 @@ def test_create_item():
         "price": 29.99,
         "is_available": True
     }
-    response = client.post("/items", json=item_data)
+    response = client.post("/api/v1/items", json=item_data)
     assert response.status_code == 200
     data = response.json()
     assert data["name"] == item_data["name"]
@@ -49,18 +34,18 @@ def test_get_item():
         "price": 19.99,
         "is_available": True
     }
-    create_response = client.post("/items", json=item_data)
+    create_response = client.post("/api/v1/items", json=item_data)
     created_item = create_response.json()
     
     # Then get the item
-    response = client.get(f"/items/{created_item['id']}")
+    response = client.get(f"/api/v1/items/{created_item['id']}")
     assert response.status_code == 200
     data = response.json()
     assert data["name"] == item_data["name"]
 
 def test_get_nonexistent_item():
     """Test getting an item that doesn't exist"""
-    response = client.get("/items/999")
+    response = client.get("/api/v1/items/999")
     assert response.status_code == 404
 
 def test_update_item():
@@ -72,7 +57,7 @@ def test_update_item():
         "price": 10.00,
         "is_available": True
     }
-    create_response = client.post("/items", json=item_data)
+    create_response = client.post("/api/v1/items", json=item_data)
     created_item = create_response.json()
     
     # Update the item
@@ -82,7 +67,7 @@ def test_update_item():
         "price": 15.00,
         "is_available": False
     }
-    response = client.put(f"/items/{created_item['id']}", json=updated_data)
+    response = client.put(f"/api/v1/items/{created_item['id']}", json=updated_data)
     assert response.status_code == 200
     data = response.json()
     assert data["name"] == updated_data["name"]
@@ -97,13 +82,13 @@ def test_delete_item():
         "price": 5.00,
         "is_available": True
     }
-    create_response = client.post("/items", json=item_data)
+    create_response = client.post("/api/v1/items", json=item_data)
     created_item = create_response.json()
     
     # Delete the item
-    response = client.delete(f"/items/{created_item['id']}")
+    response = client.delete(f"/api/v1/items/{created_item['id']}")
     assert response.status_code == 200
     
     # Verify it's deleted
-    get_response = client.get(f"/items/{created_item['id']}")
+    get_response = client.get(f"/api/v1/items/{created_item['id']}")
     assert get_response.status_code == 404

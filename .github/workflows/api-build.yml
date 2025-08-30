@@ -28,5 +28,8 @@ jobs:
 
             - name: Run FastAPI build checks
               run: |
-                # Run tests
-                pytest test_main.py -v
+                # Run all tests
+                pytest tests/ -v
+                
+                # Test API can start
+                python -c "from app.main import app; print('✅ App imports successfully')"

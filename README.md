@@ -1,24 +1,59 @@
 # Simple FastAPI Project
 
-A simple FastAPI application for demonstrating GitHub Actions CI/CD workflows.
+A well-organized FastAPI application demonstrating GitHub Actions CI/CD workflows with proper project structure.
 
-## Features
+## 📁 Project Structure
 
-- RESTful API with CRUD operations
-- Item management (Create, Read, Update, Delete)
-- Health check endpoint
-- Automatic API documentation with Swagger UI
-- Comprehensive test suite
+```
+.
+├── app/                     # Main application package
+│   ├── __init__.py
+│   ├── main.py             # FastAPI app initialization
+│   ├── core/               # Core functionality
+│   │   ├── __init__.py
+│   │   └── config.py       # Application settings
+│   ├── models/             # Pydantic models
+│   │   ├── __init__.py
+│   │   └── item.py         # Item data models
+│   └── routers/            # API route handlers
+│       ├── __init__.py
+│       └── items.py        # Items CRUD endpoints
+├── tests/                  # Test suite
+│   ├── __init__.py
+│   ├── test_main.py        # Main app tests
+│   └── test_items.py       # Items API tests
+├── docs/                   # Documentation
+├── run.py                  # Application entry point
+├── requirements.txt        # Python dependencies
+├── Dockerfile             # Container configuration
+├── .gitignore             # Git ignore rules
+└── .github/
+    └── workflows/
+        ├── test.yml        # Comprehensive CI/CD workflow
+        └── api-build.yml   # Simple build workflow
+```
 
-## API Endpoints
+## 🚀 Features
 
+- **Modular Architecture**: Organized into logical packages
+- **API Versioning**: Routes prefixed with `/api/v1`
+- **Configuration Management**: Settings via environment variables
+- **Comprehensive Testing**: Separate test modules for different components
+- **Type Safety**: Full type hints with Pydantic models
+- **Documentation**: Auto-generated API docs with FastAPI
+
+## 📡 API Endpoints
+
+### Core Endpoints
 - `GET /` - Welcome message
 - `GET /health` - Health check
-- `GET /items` - Get all items
-- `GET /items/{item_id}` - Get specific item
-- `POST /items` - Create new item
-- `PUT /items/{item_id}` - Update item
-- `DELETE /items/{item_id}` - Delete item
+
+### Items API (`/api/v1/items`)
+- `GET /api/v1/items` - Get all items
+- `GET /api/v1/items/{item_id}` - Get specific item
+- `POST /api/v1/items` - Create new item
+- `PUT /api/v1/items/{item_id}` - Update item
+- `DELETE /api/v1/items/{item_id}` - Delete item
 
 ## Installation
 
@@ -64,14 +99,15 @@ python -c "import sys; print('Python path:', sys.executable)"
 
 ### Development Server
 
-```bash
-python main.py
+```powershell
+# Run the application
+python run.py
 ```
 
 Or using uvicorn directly:
 
-```bash
-uvicorn main:app --reload
+```powershell
+uvicorn app.main:app --reload
 ```
 
 The API will be available at:
@@ -81,15 +117,22 @@ The API will be available at:
 
 ## Running Tests
 
-```bash
-pytest test_main.py -v
+```powershell
+# Run all tests
+pytest tests/ -v
+
+# Run specific test module
+pytest tests/test_items.py -v
+
+# Run with coverage
+pytest tests/ --cov=app
 ```
 
 ## Example Usage
 
 ### Create an item
-```bash
-curl -X POST "http://localhost:8000/items" \
+```powershell
+curl -X POST "http://localhost:8000/api/v1/items" \
      -H "Content-Type: application/json" \
      -d '{
        "name": "Example Item",
@@ -100,18 +143,18 @@ curl -X POST "http://localhost:8000/items" \
 ```
 
 ### Get all items
-```bash
-curl http://localhost:8000/items
+```powershell
+curl http://localhost:8000/api/v1/items
 ```
 
 ### Get specific item
-```bash
-curl http://localhost:8000/items/1
+```powershell
+curl http://localhost:8000/api/v1/items/1
 ```
 
 ### Update an item
-```bash
-curl -X PUT "http://localhost:8000/items/1" \
+```powershell
+curl -X PUT "http://localhost:8000/api/v1/items/1" \
      -H "Content-Type: application/json" \
      -d '{
        "name": "Updated Item",
@@ -122,8 +165,8 @@ curl -X PUT "http://localhost:8000/items/1" \
 ```
 
 ### Delete an item
-```bash
-curl -X DELETE "http://localhost:8000/items/1"
+```powershell
+curl -X DELETE "http://localhost:8000/api/v1/items/1"
 ```
 
 ## Project Structure

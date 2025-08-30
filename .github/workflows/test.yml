@@ -38,13 +38,13 @@ jobs:
       # Run tests
       - name: Run tests with pytest
         run: |
-          pytest test_main.py -v
+          pytest tests/ -v
 
       # Test API health check
       - name: Start API and test health endpoint
         run: |
           # Start the API in the background
-          python main.py &
+          python run.py &
           sleep 10
           # Test health endpoint
           curl -f http://localhost:8000/health || exit 1
