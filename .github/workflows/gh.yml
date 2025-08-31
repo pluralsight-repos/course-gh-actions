@@ -4,7 +4,7 @@ on:
   push:
     paths:
       - "./github/workflows/gh.yml"
-  workflow_dispatch: # manual
+  workflow_dispatch: # manual trigger
 
 jobs:
   cli:
