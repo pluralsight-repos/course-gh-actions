@@ -3,19 +3,17 @@ name: butler
 on:
   issue_comment:
     types: [created]
-  permissions:
+permissions:
     pull-requests: write
 
 jobs:
   chat:
     runs-on: ubuntu-latest
     steps:
-      - name: Respond to issue comment
-        uses: ca-dp/code-butler@v1
+      - uses: ca-dp/code-butler@v1
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           cmd: chat
           comment_body: ${{ github.event.comment.body }}    
-          max_tokens: 1024
-          temperature: 0.7
+
