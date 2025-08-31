@@ -38,7 +38,7 @@ jobs:
               console.log(`issue: ${issue}`);
 
               // create a comment thanking contributors
-              const comment = await github.issues.createComment({
+              const comment = await github.rest.issues.createComment({
                 owner,
                 repo,
                 issue_number,
@@ -48,7 +48,7 @@ jobs:
               console.log(comment.data)
 
               // auto label
-              await github.issues.addLabels({
+              await github.rest.issues.addLabels({
                 owner,
                 repo,
                 issue_number,
