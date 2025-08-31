@@ -41,6 +41,9 @@ A well-organized FastAPI application demonstrating GitHub Actions CI/CD workflow
 - **Comprehensive Testing**: Separate test modules for different components
 - **Type Safety**: Full type hints with Pydantic models
 - **Documentation**: Auto-generated API docs with FastAPI
+- **Professional Logging**: Structured logging with request tracing
+- **Request Middleware**: Automatic request/response logging with unique IDs
+- **Multiple Log Formats**: Console, file, and JSON logging options
 
 ## 📡 API Endpoints
 
@@ -126,6 +129,62 @@ pytest tests/test_items.py -v
 
 # Run with coverage
 pytest tests/ --cov=app
+```
+
+## 📊 Logging
+
+This application includes comprehensive logging with the following features:
+
+### Log Levels
+- **DEBUG**: Detailed diagnostic information
+- **INFO**: General application flow
+- **WARNING**: Warning messages
+- **ERROR**: Error conditions  
+- **CRITICAL**: Critical error conditions
+
+### Log Formats
+- **Simple**: Basic level and message
+- **Detailed**: Timestamp, level, module, line number, and message with colors
+- **JSON**: Structured JSON format for log aggregation systems
+
+### Request Tracing
+Every HTTP request gets a unique `request_id` that's:
+- Logged with all related log entries
+- Added to response headers as `X-Request-ID`
+- Used for tracking requests across the application
+
+### Configuration
+Configure logging via environment variables:
+
+```bash
+# .env file
+LOG_LEVEL=INFO                    # DEBUG, INFO, WARNING, ERROR, CRITICAL
+LOG_FORMAT=detailed               # simple, detailed, json  
+LOG_FILE=logs/app.log             # Path to log file
+ENABLE_JSON_LOGS=false            # Enable JSON format for file logs
+ENABLE_FILE_LOGGING=true          # Enable file logging
+```
+
+### Example Log Output
+
+**Console (Detailed Format):**
+```
+2025-08-30 10:30:45 | INFO     | fastapi_app.middleware:45 | Incoming POST request to /api/v1/items
+2025-08-30 10:30:45 | INFO     | fastapi_app.routers.items:35 | Creating new item: Test Item
+2025-08-30 10:30:45 | INFO     | fastapi_app.middleware:67 | Request completed: POST /api/v1/items - 200
+```
+
+**JSON Format:**
+```json
+{
+  "timestamp": "2025-08-30T10:30:45.123456",
+  "level": "INFO",
+  "logger": "fastapi_app.routers.items", 
+  "message": "Creating new item: Test Item",
+  "request_id": "abc123-def456-ghi789",
+  "item_name": "Test Item",
+  "item_price": 29.99
+}
 ```
 
 ## Example Usage

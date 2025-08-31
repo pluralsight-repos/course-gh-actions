@@ -9,6 +9,8 @@ def test_get_items_empty():
     response = client.get("/api/v1/items")
     assert response.status_code == 200
     assert response.json() == []
+    # Check that request ID header is present
+    assert "X-Request-ID" in response.headers
 
 def test_create_item():
     """Test creating a new item"""
@@ -24,6 +26,7 @@ def test_create_item():
     assert data["name"] == item_data["name"]
     assert data["price"] == item_data["price"]
     assert "id" in data
+    assert "X-Request-ID" in response.headers
 
 def test_get_item():
     """Test getting a specific item"""
