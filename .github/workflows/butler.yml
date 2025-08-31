@@ -8,6 +8,7 @@ permissions:
 
 jobs:
   chat:
+    if: contains(github.event.comment.body, '/chat')
     runs-on: ubuntu-latest
     steps:
       - uses: ca-dp/code-butler@v1
@@ -16,4 +17,14 @@ jobs:
           OPENAI_API_KEY: ${{ secrets.GITHUB_TOKEN }}
           cmd: chat
           comment_body: ${{ github.event.comment.body }}    
+
+  review:
+    if: contains(github.event.comment.body, '/review')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: ca-dp/code-butler@v1
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          OPENAI_API_KEY: ${{ secrets.GITHUB_TOKEN }}
+          cmd: review  
 
