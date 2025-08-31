@@ -1,0 +1,21 @@
+name: github-actions-demo
+
+on:
+  push:
+    paths:
+      - "./github/workflows/gh.yml"
+  workflow_dispatch: # manual
+
+jobs:
+  cli:
+    runs-on: ubuntu-latest
+    steps:
+      - run: env
+      - run: gh --version
+      - run: gh auth status
+      - run: gh repo list
+      - run: gh issue list
+      - run: gh pr list
+      - run: gh workflow list
+      - run: gh repo view
+      - run: gh app /repos/:owner/:repo/actions/workflows
