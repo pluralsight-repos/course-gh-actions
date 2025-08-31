@@ -21,4 +21,4 @@ jobs:
       - run: gh pr list
       - run: gh workflow list
       - run: gh repo view
-      - run: gh app /repos/:owner/:repo/actions/workflows
+      - run: gh api /repos/:owner/:repo/actions/workflows
