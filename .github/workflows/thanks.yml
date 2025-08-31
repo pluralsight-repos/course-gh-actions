@@ -26,12 +26,12 @@ jobs:
               console.log(`repo: ${repo}`);
 
               // look up the issue
-              const { data: issue } = await github.issues.get({
+              const issue = await github.rest.issues.get({
                 owner,
                 repo,
                 issue_number
               });
-              console.log(`issue: ${JSON.stringify(issue)}`);
+              console.log(`issue: ${issue}`);
 
               // create a comment thanking contributors
               const comment = await github.issues.createComment({
