@@ -17,7 +17,11 @@ jobs:
         with:
             github-token: ${{ secrets.GITHUB_TOKEN }}
             script: |
-              const issue_number = context.issue.number || 2;
+              const issue_number = context.issue.number;
+              if (!issue_number) {
+                core.setFailed('This workflow must be triggered by an issue event, not manually.');
+                return;
+              }
               console.log(`issue_number: ${issue_number}`);
 
               const owner = context.repo.owner;
