@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from .routers import items
 from .core.config import get_settings
 
@@ -22,3 +22,11 @@ async def root():
 async def health_check():
     """Health check endpoint"""
     return {"status": "healthy", "message": "API is running"}
+
+@app.get("/api/v1/items/{item_id}", response_model=Item)
+async def get_item(item_id: int):
+    """Get item by ID"""
+    item = await items.get_item(item_id)
+    if not item:
+        raise HTTPException(status_code=404, detail="Item not found")
+    return item
